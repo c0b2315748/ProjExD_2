@@ -28,22 +28,38 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     return yoko, tate
 
 
-# def game_over():
-#     go_img = pg.Surface((1100, 650))  # 空のSurface
-#     pg.draw.rect(go_img, (0, 0, 0), (0, 0, 1100, 650))
-#     go_rct = go_img.get_rect()
-#     go_rct.move_ip(0, 0)
-#     time.sleep(1)
+def game_over(screen, kk_img):
+    # game_over()
+    go_img = pg.Surface((WIDTH, HEIGHT))  # 空のSurface
+    go_img.set_alpha(200)  # 半透明化
+    pg.draw.rect(go_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
+    go_rct = go_img.get_rect()
+    screen.blit(go_img, go_rct)
 
-# def bomb_speed():
-#     accs = [a for a in range(1, 11)]
-#     lst = []
+    fonto = pg.font.Font(None, 80)
+    txt = fonto.render("Game Over", True, (255, 255, 255))
+    screen.blit(txt, [WIDTH//2-150, HEIGHT//2-50])
 
-#     for r in range(1, 11):
-#         bb_img = pg.Surface((20*r, 20*r))
-#         pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
-#         lst.append(bb_img)
-#     return accs, lst
+    kk2_rct = kk_img.get_rect()
+    kk2_rct.center = 370, 300
+    screen.blit(kk_img, kk2_rct)
+
+    kk3_rct = kk_img.get_rect()
+    kk3_rct.center = 730, 300
+    screen.blit(kk_img, kk3_rct)
+
+    pg.display.update()
+    time.sleep(5)
+
+def bomb_speed():
+    accs = [a for a in range(1, 11)]
+    lst = []
+
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        lst.append(bb_img)
+    return accs, lst
     
 
 def main():
@@ -68,28 +84,29 @@ def main():
                 return
         screen.blit(bg_img, [0, 0]) 
         if kk_rct.colliderect(bb_rct):  # こうかとんと爆弾が重なっていたら
-            # game_over()
-            go_img = pg.Surface((WIDTH, HEIGHT))  # 空のSurface
-            go_img.set_alpha(200)  # 半透明化
-            pg.draw.rect(go_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
-            go_rct = go_img.get_rect()
-            screen.blit(go_img, go_rct)
+            game_over(screen, kk_img)
+            return 
+            # go_img = pg.Surface((WIDTH, HEIGHT))  # 空のSurface
+            # go_img.set_alpha(200)  # 半透明化
+            # pg.draw.rect(go_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
+            # go_rct = go_img.get_rect()
+            # screen.blit(go_img, go_rct)
 
-            fonto = pg.font.Font(None, 80)
-            txt = fonto.render("Game Over", True, (255, 255, 255))
-            screen.blit(txt, [WIDTH//2-150, HEIGHT//2-50])
+            # fonto = pg.font.Font(None, 80)
+            # txt = fonto.render("Game Over", True, (255, 255, 255))
+            # screen.blit(txt, [WIDTH//2-150, HEIGHT//2-50])
 
-            kk2_rct = kk_img.get_rect()
-            kk2_rct.center = 370, 300
-            screen.blit(kk_img, kk2_rct)
+            # kk2_rct = kk_img.get_rect()
+            # kk2_rct.center = 370, 300
+            # screen.blit(kk_img, kk2_rct)
 
-            kk3_rct = kk_img.get_rect()
-            kk3_rct.center = 730, 300
-            screen.blit(kk_img, kk3_rct)
+            # kk3_rct = kk_img.get_rect()
+            # kk3_rct.center = 730, 300
+            # screen.blit(kk_img, kk3_rct)
 
-            pg.display.update()
-            time.sleep(5)
-            return
+            # pg.display.update()
+            # time.sleep(5)
+            # return
             
 
         key_lst = pg.key.get_pressed()
@@ -111,16 +128,19 @@ def main():
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, kk_rct)
 
-        bb_rct.move_ip(vx, vy)
+        bb_accs, bb_imgs = bomb_speed()
+        avx = vx*bb_accs[min(tmr//500, 9)]
+        avy = vy*bb_accs[min(tmr//500, 9)]
+        bb_img = bb_imgs[min(tmr//500, 9)]
+        bb_img.set_colorkey((0, 0, 0))  # 爆弾の四隅を透過させる
+
+        bb_rct.move_ip(avx, avy)
         yoko, tate = check_bound(bb_rct)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
         screen.blit(bb_img, bb_rct)
-
-        # avx = vx*bb_accs[min(tmr//500, 9)]
-        # bb_img = bb_imgs[min(tmr//500, 9)]
 
         pg.display.update()
         tmr += 1
