@@ -32,6 +32,7 @@ def game_over(screen, kk_img):
     """
     引数：screen、こうかとんの画像kk_img
     戻り値なし
+    Game Over画面を5秒間表示する。
     """
     # game_over()
     go_img = pg.Surface((WIDTH, HEIGHT))  # 空のSurface
