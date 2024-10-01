@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -27,6 +28,21 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     return yoko, tate
 
 
+# def game_over():
+#     go_img = pg.Surface((1100, 650))  # 空のSurface
+#     pg.draw.rect(go_img, (0, 0, 0), (0, 0, 1100, 650))
+#     go_rct = go_img.get_rect()
+#     go_rct.move_ip(0, 0)
+#     time.sleep(1)
+
+def bomb_speed():
+    accs = [a for a in range(1, 11)]
+
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+    
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -42,13 +58,36 @@ def main():
     vx, vy = +5, +5  # 爆弾の速度
     clock = pg.time.Clock()
     tmr = 0
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
         screen.blit(bg_img, [0, 0]) 
         if kk_rct.colliderect(bb_rct):  # こうかとんと爆弾が重なっていたら
-            return 
+            # game_over()
+            go_img = pg.Surface((WIDTH, HEIGHT))  # 空のSurface
+            go_img.set_alpha(200)  # 半透明化
+            pg.draw.rect(go_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
+            go_rct = go_img.get_rect()
+            screen.blit(go_img, go_rct)
+
+            fonto = pg.font.Font(None, 80)
+            txt = fonto.render("Game Over", True, (255, 255, 255))
+            screen.blit(txt, [WIDTH//2-150, HEIGHT//2-50])
+
+            kk2_rct = kk_img.get_rect()
+            kk2_rct.center = 370, 300
+            screen.blit(kk_img, kk2_rct)
+
+            kk3_rct = kk_img.get_rect()
+            kk3_rct.center = 730, 300
+            screen.blit(kk_img, kk3_rct)
+
+            pg.display.update()
+            time.sleep(5)
+            return
+            
 
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]  # 横座標、　縦座標
@@ -76,6 +115,7 @@ def main():
         if not tate:
             vy *= -1
         screen.blit(bb_img, bb_rct)
+
         pg.display.update()
         tmr += 1
         clock.tick(50)
