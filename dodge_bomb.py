@@ -60,6 +60,7 @@ def bomb_speed():
     """
     引数なし
     戻り値：爆弾の加速度(accs)と大きさ(lst)が入ったタプル
+    爆弾の加速度と大きさを変更する。
     """
     accs = [a for a in range(1, 11)]
     lst = []
