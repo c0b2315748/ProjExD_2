@@ -86,27 +86,6 @@ def main():
         if kk_rct.colliderect(bb_rct):  # こうかとんと爆弾が重なっていたら
             game_over(screen, kk_img)
             return 
-            # go_img = pg.Surface((WIDTH, HEIGHT))  # 空のSurface
-            # go_img.set_alpha(200)  # 半透明化
-            # pg.draw.rect(go_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
-            # go_rct = go_img.get_rect()
-            # screen.blit(go_img, go_rct)
-
-            # fonto = pg.font.Font(None, 80)
-            # txt = fonto.render("Game Over", True, (255, 255, 255))
-            # screen.blit(txt, [WIDTH//2-150, HEIGHT//2-50])
-
-            # kk2_rct = kk_img.get_rect()
-            # kk2_rct.center = 370, 300
-            # screen.blit(kk_img, kk2_rct)
-
-            # kk3_rct = kk_img.get_rect()
-            # kk3_rct.center = 730, 300
-            # screen.blit(kk_img, kk3_rct)
-
-            # pg.display.update()
-            # time.sleep(5)
-            # return
             
 
         key_lst = pg.key.get_pressed()
