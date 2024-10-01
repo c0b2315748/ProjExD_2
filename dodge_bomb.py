@@ -29,6 +29,10 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
 
 
 def game_over(screen, kk_img):
+    """
+    引数：screen、こうかとんの画像kk_img
+    戻り値なし
+    """
     # game_over()
     go_img = pg.Surface((WIDTH, HEIGHT))  # 空のSurface
     go_img.set_alpha(200)  # 半透明化
@@ -52,6 +56,10 @@ def game_over(screen, kk_img):
     time.sleep(5)
 
 def bomb_speed():
+    """
+    引数なし
+    戻り値：爆弾の加速度(accs)と大きさ(lst)が入ったタプル
+    """
     accs = [a for a in range(1, 11)]
     lst = []
 
@@ -60,7 +68,17 @@ def bomb_speed():
         pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
         lst.append(bb_img)
     return accs, lst
-    
+
+def direction_kk(kk_img, tpl):  # 方向変更
+    """
+    引数：こうかとんの画像、移動量のタプル
+    戻り値：
+    """
+    dir = [-45, -90, 0, 45, 90]
+    num = [(-5,0),(-5,+5),(0,+5),(+5,+5),(+5,0),(+5,-5),(0,-5),(-5,-5)]
+    for i in num:
+        if tpl == i
+            pg.transform.rotozoom(kk_img, , 0)
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -77,6 +95,7 @@ def main():
     vx, vy = +5, +5  # 爆弾の速度
     clock = pg.time.Clock()
     tmr = 0
+
 
     while True:
         for event in pg.event.get():
@@ -120,6 +139,8 @@ def main():
         if not tate:
             vy *= -1
         screen.blit(bb_img, bb_rct)
+
+        direction_kk(sum_mv)
 
         pg.display.update()
         tmr += 1
