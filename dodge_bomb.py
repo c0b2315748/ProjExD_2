@@ -35,12 +35,15 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
 #     go_rct.move_ip(0, 0)
 #     time.sleep(1)
 
-def bomb_speed():
-    accs = [a for a in range(1, 11)]
+# def bomb_speed():
+#     accs = [a for a in range(1, 11)]
+#     lst = []
 
-    for r in range(1, 11):
-        bb_img = pg.Surface((20*r, 20*r))
-        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+#     for r in range(1, 11):
+#         bb_img = pg.Surface((20*r, 20*r))
+#         pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+#         lst.append(bb_img)
+#     return accs, lst
     
 
 def main():
@@ -115,6 +118,9 @@ def main():
         if not tate:
             vy *= -1
         screen.blit(bb_img, bb_rct)
+
+        # avx = vx*bb_accs[min(tmr//500, 9)]
+        # bb_img = bb_imgs[min(tmr//500, 9)]
 
         pg.display.update()
         tmr += 1
